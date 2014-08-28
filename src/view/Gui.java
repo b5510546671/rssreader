@@ -16,16 +16,20 @@ public class Gui{
 	}
 	
 	public void initComponents(){
+		JPanel panel = new JPanel();
+		
 		JLabel label = new JLabel();
 		label.setText("Enter the RSS URL: ");
 		
-		JTextField urlField = new JTextField(100);
+		JTextField urlField = new JTextField(50);
 		
 		JButton submitbtn = new JButton("Submit");
 		
-		frame.add(label);
-		frame.add(urlField);
-		frame.add(submitbtn);
+		panel.add(label);
+		panel.add(urlField);
+		panel.add(submitbtn);
+		
+		frame.add(panel);
 	}
 	
 	public void run(){
