@@ -2,7 +2,6 @@ package model;
 
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name = "item")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Item {
 	

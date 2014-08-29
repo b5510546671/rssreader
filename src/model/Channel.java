@@ -3,7 +3,6 @@ package model;
 import java.util.*;
 import javax.xml.bind.annotation.*;
 
-@XmlRootElement(name = "channel")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Channel {
 	
