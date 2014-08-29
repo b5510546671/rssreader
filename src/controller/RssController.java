@@ -28,8 +28,8 @@ public class RssController {
 			
 			e.printStackTrace();
 		}
-		Object obj = unmarshaller.unmarshal(file);
-		Rss rss = (Rss)obj;
+		Object fileobj = unmarshaller.unmarshal(file);
+		Rss rss = (Rss)fileobj;
 		return rss;
 	}
 }

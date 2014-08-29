@@ -3,43 +3,72 @@ package view;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.xml.bind.JAXBException;
 
-public class Gui{
+import model.Rss;
+import controller.RssController;
+
+public class Gui extends JFrame{
 	
-	private JFrame frame;
+	private RssController controller;
 	
-	public Gui(  ){
+	private JLabel label;
+	private JTextField urlField;
+	private JButton submitbtn;
+	private JButton clearbtn;
+	private JTextArea itemArea;
+	private JTextArea feedArea;
+	
+	public Gui(){
 		
-		frame = new JFrame("RSS Feed");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		RssController controller = new RssController();
+		Rss rss = null;
+		try {
+			rss = controller.start("http://feeds.reuters.com/reuters/Election2012?format=xml");
+			//rss = controller.start("http://feeds.bbci.co.uk/news/rss.xml");
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		
+		setTitle("RSS Feed");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setPreferredSize(new Dimension(900,200));
 		initComponents();
 	}
 	
 	public void initComponents(){
 		JPanel panel = new JPanel();
 		
-		JLabel label = new JLabel();
+		label = new JLabel();
 		label.setText("Enter the RSS URL: ");
 		
-		JTextField urlField = new JTextField(50);
+		urlField = new JTextField(50);
 		
-		JButton submitbtn = new JButton("Submit");
+		submitbtn = new JButton("Submit");
+		
+		clearbtn = new JButton("Clear");
+		
+		itemArea = new JTextArea(10, 50);
+		itemArea.setEditable(false);
+		
+		feedArea = new JTextArea(10, 80);
+		feedArea.setEditable(false);
 		
 		panel.add(label);
 		panel.add(urlField);
 		panel.add(submitbtn);
+		panel.add(clearbtn);
+		panel.add(itemArea);
+		panel.add(feedArea);
 		
-		frame.add(panel);
+		add(panel);
 	}
 	
 	public void run(){
-		frame.pack();
-		frame.setVisible(true);
+		pack();
+		setVisible(true);
 		
 	}
 	
-	public static void main(String[] args){
-		Gui ui = new Gui();
-		ui.run();
-	}
+
 }
