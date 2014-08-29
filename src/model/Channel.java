@@ -1,7 +1,10 @@
 package model;
 
 import java.util.*;
+import javax.xml.bind.annotation.*;
 
+@XmlRootElement(name = "channel")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Channel {
 	
 	private String title;
@@ -11,6 +14,7 @@ public class Channel {
 	private String lastBuildDate;
 	private String copyright;
 	
+	@XmlElement(name = "item")
 	private List<Item> itemlist = new ArrayList<Item>();
 	
 	public Channel(){
