@@ -57,6 +57,7 @@ public class Gui extends JFrame{
 		label.setText("Enter the RSS URL: ");
 		
 		urlField = new JTextField(50);
+		urlField.grabFocus();
 		
 		submitbtn = new JButton("Submit");
 		submitbtn.addActionListener(new SubmitBtn());
@@ -165,6 +166,7 @@ public class Gui extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			urlField.setText("");
+			urlField.grabFocus();
 			
 		}
 		
