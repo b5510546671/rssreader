@@ -27,8 +27,13 @@ public class Gui extends JFrame{
 	private JTextArea itemArea;
 	private JEditorPane feedPane;
 	
-	private JLabel currentChannelLabel;
-	private JLabel currentChannel;
+	private JLabel currentChannelTitleLabel;
+//	private JLabel currentChannelLinkLabel;
+	private JLabel currentChannelDescriptionLabel;
+	private JLabel currentChannelLanguageLabel;
+//	private JLabel currentChannelLastBuildDateLabel;
+	private JLabel currentChannelCopyrightLabel;
+	
 	
 	private JPanel itemPanel;
 	private JScrollPane itemScroll;
@@ -61,8 +66,12 @@ public class Gui extends JFrame{
 		clearbtn = new JButton("Clear");
 		clearbtn.addActionListener(new ClearBtn());
 		
-		currentChannelLabel = new JLabel("Current Channel: ");
-		currentChannel = new JLabel(" ");
+		currentChannelTitleLabel = new JLabel("Current Channel");
+		currentChannelDescriptionLabel = new JLabel("");
+		currentChannelLanguageLabel = new JLabel("");
+		currentChannelCopyrightLabel = new JLabel("");
+		
+		
 		
 		itemPanel = new JPanel();
 		itemPanel.setBorder(new TitledBorder(new EtchedBorder(), "Item Area"));
@@ -84,8 +93,10 @@ public class Gui extends JFrame{
 		panel.add(urlField);
 		panel.add(submitbtn);
 		panel.add(clearbtn);
-		panel.add(currentChannelLabel);
-		panel.add(currentChannel);
+		panel.add(currentChannelTitleLabel);
+		panel.add(currentChannelDescriptionLabel);
+		panel.add(currentChannelLanguageLabel);
+		panel.add(currentChannelCopyrightLabel);
 		panel.add(itemPanel);
 		panel.add(feedPanel);
 
@@ -108,7 +119,10 @@ public class Gui extends JFrame{
 			itemArea.append(item.getTitle() + newline);
 		}
 		
-		currentChannel.setText(rss.getChannel().getTitle());
+		currentChannelTitleLabel.setText("Current Channel: " + rss.getChannel().getTitle());
+		currentChannelDescriptionLabel.setText("Description: " + rss.getChannel().getDescription());
+		currentChannelLanguageLabel.setText("Language: " + rss.getChannel().getLanguage());
+		currentChannelCopyrightLabel.setText(rss.getChannel().getCopyright());
 	}
 	
 	public void run(){
