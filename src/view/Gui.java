@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.MalformedURLException;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -167,21 +168,23 @@ public class Gui extends JFrame{
 		
 	}
 	
+	public void getRSS(){
+		//startFeedRss(urlField.getText());
+		initTable(urlField.getText());
+		panel.updateUI();
+	}
+	
 	class SubmitBtn implements ActionListener, KeyListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			//startFeedRss(urlField.getText());
-			initTable(urlField.getText());
-			panel.updateUI();
+			getRSS();
 		}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				//startFeedRss(urlField.getText());
-				initTable(urlField.getText());
-				panel.updateUI();
+				getRSS();
 			}
 			
 		}
