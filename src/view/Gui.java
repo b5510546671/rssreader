@@ -16,37 +16,68 @@ import javax.xml.bind.JAXBException;
 import model.Item;
 import model.Rss;
 import controller.RssController;
-
+/**
+ * A class for creating user interface.
+ * @author Supavit 5510546671
+ * @version 2014.09.02
+ *
+ */
 public class Gui extends JFrame{
 	
-	private final static String newline = "\n";
+	/** Add new line */
+	private final static String NEWLINE = "\n";
 	
-	private RssController controller;
-	
+	/** The Enter RSS URL label */
 	private JLabel label;
+	
+	/** Text field for input URL */
 	private JTextField urlField;
+	
+	/** Submit Button */
 	private JButton submitbtn;
+	
+	/** Clear URL Field Button */
 	private JButton clearbtn;
+	
+	/** List of RSS Items */
 	private JList<Item> itemList;
-	private JTextArea itemArea;
+	
+	/** Text area for showing news feed */
 	private JTextArea feedArea;
 	
+	/** Label for showing Title of current channel */
 	private JLabel currentChannelTitleLabel;
+	
+	/** Label for showing Description of current channel */
 	private JLabel currentChannelDescriptionLabel;
+	
+	/** Label for showing Language of current channel */
 	private JLabel currentChannelLanguageLabel;
+	
+	/** Label for showing Copyright of current channel */
 	private JLabel currentChannelCopyrightLabel;
 	
-	
+	/** Panel for keeping RSS Items */
 	private JPanel itemPanel;
+	
+	/** Scroll pane for RSS Items */
 	private JScrollPane itemScroll;
 	
+	/** Panel for keeping RSS Feeds */
 	private JPanel feedPanel;
+	
+	/** Scroll pane for RSS Feeds */
 	private JScrollPane feedScroll;
 	
+	/** Editor pane for showing Read more link */
 	private JEditorPane feedEditorPane;
 	
+	/** Panel for keeping all user interface components */
 	private JPanel panel;
 	
+	/**
+	 * Initialize a new user interface.
+	 */
 	public Gui(){
 		setTitle("RSS Feed");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,6 +85,9 @@ public class Gui extends JFrame{
 		initComponents();
 	}
 	
+	/**
+	 * Initialize all components on the screen.
+	 */
 	public void initComponents(){
 		panel = new JPanel();
 		
@@ -62,6 +96,7 @@ public class Gui extends JFrame{
 		
 		urlField = new JTextField(50);
 		urlField.grabFocus();
+		urlField.setText("http://feeds.bbci.co.uk/news/rss.xml");
 		
 		submitbtn = new JButton("Submit");
 		submitbtn.addActionListener(new SubmitBtn());
@@ -110,7 +145,12 @@ public class Gui extends JFrame{
 		add(panel);
 	}
 	
-	public void createItemList(ArrayList<String> list, ArrayList listItem){
+	/**
+	 * Create list for keeping RSS Items.
+	 * @param list a list of RSS Items'titles.
+	 * @param listItem a list of RSS Items
+	 */
+	public void createItemList(ArrayList<String> list, ArrayList<Item> listItem){
 		if(itemScroll != null){
 			itemPanel.remove(itemScroll);
 		}
@@ -122,34 +162,34 @@ public class Gui extends JFrame{
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting()) {
                 	Item tmpItem = (Item) listItem.get(itemList.getSelectedIndex());
-                	feedArea.setText("Description: " + tmpItem.getDescription().toString() + newline);
-                	feedArea.append("Published Date: " + tmpItem.getPubDate().toString() + newline);
+                	feedArea.setText("Description: " + tmpItem.getDescription().toString() + NEWLINE);
+                	feedArea.append("Published Date: " + tmpItem.getPubDate().toString() + NEWLINE);
                 	feedEditorPane.setText("<html> Read more at " + "<a href=\""+tmpItem.getLink()+"\">Link</a>" + "</html>" );
-                	
+                	pack();
                 }
             }
         });
 		itemScroll = new JScrollPane(itemList);
 		itemScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		
 		itemPanel.add(itemScroll);
 	}
 	
+	/**
+	 * Start to get RSS Items from URL.
+	 * @param link an input URL link
+	 */
 	public void startFeedRss(String link){
 		RssController controller = new RssController();
 		Rss rss = null;
 		try {
-			//rss = controller.start("http://feeds.reuters.com/reuters/Election2012?format=xml");
-			//rss = controller.start("http://feeds.bbci.co.uk/news/rss.xml");
-			//http://rssfeeds.sanook.com/rss/feeds/sanook/hot.variety.xml
 			rss = controller.start(link);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		
 		ArrayList<String> list = new ArrayList<String>();
-		ArrayList listItem = new ArrayList();
+		ArrayList<Item> listItem = new ArrayList<Item>();
 		
 		for(Item item : rss.getChannel().getItemlist()){
 			list.add(item.getTitle());
@@ -162,6 +202,10 @@ public class Gui extends JFrame{
 		
 	}
 	
+	/**
+	 * Set all the current channel labels.
+	 * @param rss the RSS channel
+	 */
 	public void setLabel(Rss rss){
 		currentChannelTitleLabel.setText("Current Channel: " + rss.getChannel().getTitle());
 		currentChannelDescriptionLabel.setText("Description: " + rss.getChannel().getDescription());
@@ -169,12 +213,20 @@ public class Gui extends JFrame{
 		currentChannelCopyrightLabel.setText(rss.getChannel().getCopyright());
 	}
 	
+	/**
+	 * Run the user interface.
+	 */
 	public void run(){
 		pack();
 		setVisible(true);
 		
 	}
 	
+	/**
+	 * Submit Button action.
+	 * @author Supavit 5510546671
+	 *
+	 */
 	class SubmitBtn implements ActionListener, KeyListener{
 
 		@Override
@@ -202,6 +254,11 @@ public class Gui extends JFrame{
 		
 	}
 	
+	/**
+	 * Clear Button action.
+	 * @author Supavit 5510546671
+	 *
+	 */
 	class ClearBtn implements ActionListener{
 
 		@Override
