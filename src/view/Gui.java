@@ -119,7 +119,11 @@ public class Gui extends JFrame{
 	}
 	
 	public void createItemList(ArrayList<String> list, ArrayList listItem){
+		if(itemScroll != null){
+			itemPanel.remove(itemScroll);
+		}
 		itemList = new JList(list.toArray());
+		
 		
 		itemList.addListSelectionListener(new ListSelectionListener() {
 
