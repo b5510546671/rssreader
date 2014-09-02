@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -25,8 +25,9 @@ public class Gui extends JFrame{
 	private JTextField urlField;
 	private JButton submitbtn;
 	private JButton clearbtn;
+	private JList<Item> itemList;
 	private JTextArea itemArea;
-	private JEditorPane feedPane;
+	private JTextArea feedArea;
 	
 	private JLabel currentChannelTitleLabel;
 //	private JLabel currentChannelLinkLabel;
@@ -34,8 +35,6 @@ public class Gui extends JFrame{
 	private JLabel currentChannelLanguageLabel;
 //	private JLabel currentChannelLastBuildDateLabel;
 	private JLabel currentChannelCopyrightLabel;
-	
-	private JScrollPane tableScroll;
 	
 	
 	private JPanel itemPanel;
@@ -45,8 +44,6 @@ public class Gui extends JFrame{
 	private JScrollPane feedScroll;
 	
 	private JPanel panel;
-	
-	private JTable rsstable;
 	
 	public Gui(){
 		setTitle("RSS Feed");
@@ -85,13 +82,13 @@ public class Gui extends JFrame{
 		itemArea.setEditable(false);
 		itemScroll = new JScrollPane(itemArea);
 		itemScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		itemPanel.add(itemScroll);
+		//itemPanel.add(itemScroll);
 		
 		feedPanel = new JPanel();
 		feedPanel.setBorder(new TitledBorder(new EtchedBorder(), "Feed Area"));
-		feedPane = new JEditorPane();
-		feedPane.setEditable(false);
-		feedScroll = new JScrollPane(feedPane);
+		feedArea = new JTextArea(10,50);
+		feedArea.setEditable(false);
+		feedScroll = new JScrollPane(feedArea);
 		feedScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		feedPanel.add(feedScroll);
 		
@@ -103,22 +100,22 @@ public class Gui extends JFrame{
 		panel.add(currentChannelDescriptionLabel);
 		panel.add(currentChannelLanguageLabel);
 		panel.add(currentChannelCopyrightLabel);
-//		panel.add(itemPanel);
-//		panel.add(feedPanel);
-		
-//		panel.setLayout(new BorderLayout());
+		panel.add(itemPanel);
+		panel.add(feedPanel);
+
 		add(panel);
 	}
 	
-	public void setLabels(Rss rss){
-		currentChannelTitleLabel.setText("Current Channel: " + rss.getChannel().getTitle());
-		currentChannelDescriptionLabel.setText("Description: " + rss.getChannel().getDescription());
-		currentChannelLanguageLabel.setText("Language: " + rss.getChannel().getLanguage());
-		currentChannelCopyrightLabel.setText(rss.getChannel().getCopyright());
+	public void createItemList(ArrayList<String> list){
+		itemList = new JList(list.toArray());
+		itemScroll = new JScrollPane(itemList);
+		itemScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		
+		itemPanel.add(itemScroll);
 	}
 	
-	public Object[][] startFeedRss(String link){
-		
+	public void startFeedRss(String link){
 		RssController controller = new RssController();
 		Rss rss = null;
 		try {
@@ -130,36 +127,24 @@ public class Gui extends JFrame{
 			e.printStackTrace();
 		}
 		
-		Object[][] feedNews = new Object[rss.getChannel().getItemlist().size()][2];
-		int i = 0;
+		ArrayList<String> list = new ArrayList<String>();
+		
 		for(Item item : rss.getChannel().getItemlist()){
-			feedNews[i][0] = item.getTitle();
-			feedNews[i][1] = item.getDescription() + item.getLink() + item.getGuid() + item.getPubDate();
-			//itemArea.append(item.getTitle() + newline);
-			i++;
+			list.add(item.getTitle());
+//			itemArea.append(item.getTitle() + newline);
 		}
 		
-		setLabels(rss);
+		createItemList(list);
 		
-		return feedNews;
+		setLabel(rss);
+		
 	}
 	
-	public void initTable(String link){
-		Object[][] feedNews = startFeedRss(link);
-		String [] columnNames = {"Item Area", "Feed Area"};
-		
-		
-		rsstable = new JTable(feedNews, columnNames);
-		rsstable.setRowHeight(50);
-		rsstable.getColumnModel().getColumn(0).setPreferredWidth(300);
-		rsstable.getColumnModel().getColumn(1).setPreferredWidth(750);
-		rsstable.setAutoResizeMode(0);
-		
-		tableScroll = new JScrollPane(rsstable);
-		tableScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		
-		panel.add(tableScroll,BorderLayout.CENTER);
-		
+	public void setLabel(Rss rss){
+		currentChannelTitleLabel.setText("Current Channel: " + rss.getChannel().getTitle());
+		currentChannelDescriptionLabel.setText("Description: " + rss.getChannel().getDescription());
+		currentChannelLanguageLabel.setText("Language: " + rss.getChannel().getLanguage());
+		currentChannelCopyrightLabel.setText(rss.getChannel().getCopyright());
 	}
 	
 	public void run(){
@@ -168,23 +153,17 @@ public class Gui extends JFrame{
 		
 	}
 	
-	public void getRSS(){
-		//startFeedRss(urlField.getText());
-		initTable(urlField.getText());
-		panel.updateUI();
-	}
-	
 	class SubmitBtn implements ActionListener, KeyListener{
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			getRSS();
+			startFeedRss(urlField.getText());
 		}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				getRSS();
+				startFeedRss(urlField.getText());
 			}
 			
 		}
@@ -209,7 +188,6 @@ public class Gui extends JFrame{
 		public void actionPerformed(ActionEvent arg0) {
 			urlField.setText("");
 			urlField.grabFocus();
-			panel.updateUI();
 			
 		}
 		
