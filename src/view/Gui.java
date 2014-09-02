@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.xml.bind.JAXBException;
 
 import model.Item;
@@ -106,8 +108,18 @@ public class Gui extends JFrame{
 		add(panel);
 	}
 	
-	public void createItemList(ArrayList<String> list){
+	public void createItemList(ArrayList<String> list, ArrayList listItem){
 		itemList = new JList(list.toArray());
+		
+		itemList.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting()) {
+                	Item tmpItem = (Item) listItem.get(itemList.getSelectedIndex());
+                	feedArea.setText(tmpItem.getDescription().toString() + "");
+                }
+            }
+        });
 		itemScroll = new JScrollPane(itemList);
 		itemScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
@@ -128,13 +140,15 @@ public class Gui extends JFrame{
 		}
 		
 		ArrayList<String> list = new ArrayList<String>();
+		ArrayList listItem = new ArrayList();
 		
 		for(Item item : rss.getChannel().getItemlist()){
 			list.add(item.getTitle());
+			listItem.add(item);
 //			itemArea.append(item.getTitle() + newline);
 		}
 		
-		createItemList(list);
+		createItemList(list, listItem);
 		
 		setLabel(rss);
 		
