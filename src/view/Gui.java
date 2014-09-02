@@ -90,6 +90,8 @@ public class Gui extends JFrame{
 		feedPanel.setBorder(new TitledBorder(new EtchedBorder(), "Feed Area"));
 		feedArea = new JTextArea(10,50);
 		feedArea.setEditable(false);
+		feedArea.setLineWrap(true);
+		feedArea.setWrapStyleWord(true);
 		feedScroll = new JScrollPane(feedArea);
 		feedScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		feedPanel.add(feedScroll);
@@ -116,7 +118,10 @@ public class Gui extends JFrame{
             public void valueChanged(ListSelectionEvent event) {
                 if (!event.getValueIsAdjusting()) {
                 	Item tmpItem = (Item) listItem.get(itemList.getSelectedIndex());
-                	feedArea.setText(tmpItem.getDescription().toString() + "");
+                	feedArea.setText("Description: " + tmpItem.getDescription().toString() + newline);
+                	feedArea.append("Published Date: " + tmpItem.getPubDate().toString() + newline);
+                	feedArea.append("Read more at " + tmpItem.getLink());
+                	
                 }
             }
         });
