@@ -45,6 +45,8 @@ public class Gui extends JFrame{
 	private JPanel feedPanel;
 	private JScrollPane feedScroll;
 	
+	private JEditorPane feedEditorPane;
+	
 	private JPanel panel;
 	
 	public Gui(){
@@ -96,6 +98,12 @@ public class Gui extends JFrame{
 		feedScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		feedPanel.add(feedScroll);
 		
+		feedEditorPane = new JEditorPane();
+		feedEditorPane.setEditable(false);
+		feedEditorPane.setContentType("text/html");
+		
+		feedPanel.add(feedEditorPane);
+		
 		panel.add(label);
 		panel.add(urlField);
 		panel.add(submitbtn);
@@ -120,7 +128,7 @@ public class Gui extends JFrame{
                 	Item tmpItem = (Item) listItem.get(itemList.getSelectedIndex());
                 	feedArea.setText("Description: " + tmpItem.getDescription().toString() + newline);
                 	feedArea.append("Published Date: " + tmpItem.getPubDate().toString() + newline);
-                	feedArea.append("Read more at " + tmpItem.getLink());
+                	feedEditorPane.setText("<html> Read more at " + "<a href=\""+tmpItem.getLink()+"\">Link</a>" + "</html>" );
                 	
                 }
             }
