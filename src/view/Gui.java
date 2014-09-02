@@ -52,7 +52,7 @@ public class Gui extends JFrame{
 	public Gui(){
 		setTitle("RSS Feed");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(900,200));
+		setPreferredSize(new Dimension(1100,500));
 		initComponents();
 	}
 	
@@ -168,6 +168,7 @@ public class Gui extends JFrame{
 		createItemList(list, listItem);
 		
 		setLabel(rss);
+		
 		
 	}
 	
