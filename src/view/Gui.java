@@ -5,12 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URI;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.xml.bind.JAXBException;
 
 import model.Item;
@@ -165,6 +171,49 @@ public class Gui extends JFrame{
                 	feedArea.setText("Description: " + tmpItem.getDescription().toString() + NEWLINE);
                 	feedArea.append("Published Date: " + tmpItem.getPubDate().toString() + NEWLINE);
                 	feedEditorPane.setText("<html> Read more at " + "<a href=\""+tmpItem.getLink()+"\">Link</a>" + "</html>" );
+                	feedEditorPane.addMouseListener(new MouseListener() {
+						
+						@Override
+						public void mouseReleased(MouseEvent e) {
+							
+							
+						}
+						
+						@Override
+						public void mousePressed(MouseEvent e) {
+							
+						}
+						
+						@Override
+						public void mouseExited(MouseEvent e) {
+							
+						}
+						
+						@Override
+						public void mouseEntered(MouseEvent e) {
+						
+						}
+						
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							if (Desktop.isDesktopSupported()){
+	                			try
+	                            {
+	                                Desktop.getDesktop().browse(new URI(tmpItem.getLink()));
+	                            }
+	                            catch (Exception exp)
+	                            {
+	                                exp.printStackTrace();
+	                            }
+                			}
+                			else
+                            {
+                               System.out.println("Could not open link.");
+                            }
+							
+						}
+					});
+                	
                 	pack();
                 }
             }
