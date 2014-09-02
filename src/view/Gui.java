@@ -32,10 +32,8 @@ public class Gui extends JFrame{
 	private JTextArea feedArea;
 	
 	private JLabel currentChannelTitleLabel;
-//	private JLabel currentChannelLinkLabel;
 	private JLabel currentChannelDescriptionLabel;
 	private JLabel currentChannelLanguageLabel;
-//	private JLabel currentChannelLastBuildDateLabel;
 	private JLabel currentChannelCopyrightLabel;
 	
 	
@@ -52,7 +50,7 @@ public class Gui extends JFrame{
 	public Gui(){
 		setTitle("RSS Feed");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(1100,500));
+		setPreferredSize(new Dimension(1135,500));
 		initComponents();
 	}
 	
@@ -77,17 +75,11 @@ public class Gui extends JFrame{
 		currentChannelDescriptionLabel = new JLabel("");
 		currentChannelLanguageLabel = new JLabel("");
 		currentChannelCopyrightLabel = new JLabel("");
-		
-		
+				
 		
 		itemPanel = new JPanel();
 		itemPanel.setBorder(new TitledBorder(new EtchedBorder(), "Item Area"));
-		itemArea = new JTextArea(10,50);
-		itemArea.setEditable(false);
-		itemScroll = new JScrollPane(itemArea);
-		itemScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		//itemPanel.add(itemScroll);
-		
+
 		feedPanel = new JPanel();
 		feedPanel.setBorder(new TitledBorder(new EtchedBorder(), "Feed Area"));
 		feedArea = new JTextArea(10,50);
@@ -162,13 +154,11 @@ public class Gui extends JFrame{
 		for(Item item : rss.getChannel().getItemlist()){
 			list.add(item.getTitle());
 			listItem.add(item);
-//			itemArea.append(item.getTitle() + newline);
 		}
 		
 		createItemList(list, listItem);
 		
 		setLabel(rss);
-		
 		
 	}
 	
@@ -202,13 +192,11 @@ public class Gui extends JFrame{
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 		

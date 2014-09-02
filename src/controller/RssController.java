@@ -12,8 +12,6 @@ import model.Rss;
 
 public class RssController {
 	
-	
-	
 	public RssController(){
 		
 	}
